@@ -19,8 +19,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
   List<String> tabList=["INFO","LADDER","F&O","TECHNICAL","FUNDAMENTAL"];
   List<String> tabList2=["Buy/Sell","LTP","OI","Greeks",];
   late TabController tabController,tabController2;
-  late double width1;
-  double width2=25;
+  late double width1,width2;
+  //double width2=25;
+
   String? _chosenValue;
   String? selectedDate;
 
@@ -76,6 +77,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     width1=SizeConfig.screenWidth!-20;
+    width2=width1*0.3;
     return SafeArea(
       child:Scaffold(
         body: Container(
@@ -379,7 +381,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                              itemCount: data.length,
                              itemBuilder: (ctx,i){
                                return Container(
-                                 height: 45,
+                                 height: 40,
                                  width: width1,
                                  decoration: BoxDecoration(
                                    border: Border(bottom: BorderSide(color: borderColor1.withOpacity(0.3))),
@@ -393,35 +395,36 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                            width: width1*0.3,
                                            alignment: Alignment.center,
                                           color: data[i].strike<=currentStrike?Color(0xffFEEE96):Colors.white,
-                                           child: Row(
+                                           child: Stack(
                                              children: [
                                                Container(
                                                  width:width2,
                                                  alignment: Alignment.centerLeft,
-
                                                  child: Container(
-                                                   height: 45,
+                                                   height: 40,
                                                    width: width2*(double.parse(((data[i].callOi/totalCallOi)*100).toStringAsFixed(2))/100),
                                                    decoration: BoxDecoration(
                                                        color: Color(0xffFBC77C),
-                                                     borderRadius: BorderRadius.only(topRight: Radius.circular(10),bottomRight: Radius.circular(10))
+                                                       borderRadius: BorderRadius.only(topRight: Radius.circular(10),bottomRight: Radius.circular(10))
                                                    ),
                                                  ),
                                                ),
-                                               Container(
-                                                 width: width1*0.3-width2,
-                                                 height: 17,
-                                                 alignment: Alignment.centerLeft,
-                                                 child:FittedBox(
-                                                   child: Row(
-                                                     mainAxisAlignment: MainAxisAlignment.start,
-                                                     children: [
-                                                       Text('${data[i].callOi} ',style: ts14(textColor2),),
-                                                       Text(' ${data[i].callOiChange} ',style: ts16(data[i].callOiChange>0?Color(0xff8CC1A8):Colors.red,fontSize: 15),),
-                                                     ],
+                                               Align(
+                                                 alignment: Alignment.center,
+                                                 child: Container(
+                                                   width: width1*0.3,
+                                                   height: 17,
+                                                   alignment: Alignment.center,
+                                                   child:FittedBox(
+                                                     child: Row(
+                                                       mainAxisAlignment: MainAxisAlignment.start,
+                                                       children: [
+                                                         Text('${data[i].callOi} ',style: ts14(textColor2),),
+                                                         Text(' ${data[i].callOiChange} ',style: ts16(data[i].callOiChange>0?Color(0xff8CC1A8):Colors.red,fontSize: 15),),
+                                                       ],
+                                                     ),
                                                    ),
                                                  ),
-
                                                ),
                                              ],
                                            ),
@@ -441,24 +444,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                            width: width1*0.3,
                                            //alignment: Alignment.center,
                                            color: data[i].strike>=currentStrike?Color(0xffFEEE96):Colors.white,
-                                           child: Row(
+                                           child: Stack(
                                              children: [
-
-                                               Container(
-                                                 width: width1*0.3-width2,
-                                                 height: 17,
-                                                 alignment: Alignment.centerRight,
-                                                 child:FittedBox(
-                                                   child: Row(
-                                                     children: [
-                                                       Text(' ${data[i].putOi} ',style: ts14(textColor2),),
-                                                       Text(' ${data[i].putOiChange} ',style: ts16(data[i].putOiChange>0?Color(0xff8CC1A8):Colors.red,fontSize: 15),),
-                                                     ],
-                                                   ),
-                                                 ),
-
-                                               ),
-
                                                Container(
                                                  width:width2,
                                                  alignment: Alignment.centerRight,
@@ -471,6 +458,25 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                                    ),
                                                  ),
                                                ),
+                                               Align(
+                                                 alignment: Alignment.center,
+                                                 child: Container(
+                                                   width: width1*0.3,
+                                                   height: 17,
+                                                   alignment: Alignment.center,
+                                                   child:FittedBox(
+                                                     child: Row(
+                                                       children: [
+                                                         Text(' ${data[i].putOi} ',style: ts14(textColor2),),
+                                                         Text(' ${data[i].putOiChange} ',style: ts16(data[i].putOiChange>0?Color(0xff8CC1A8):Colors.red,fontSize: 15),),
+                                                       ],
+                                                     ),
+                                                   ),
+
+                                                 ),
+                                               ),
+
+
                                              ],
                                            ),
                                            //  child: Text("${data[i].callOi}",style: ts14(textColor1),),
